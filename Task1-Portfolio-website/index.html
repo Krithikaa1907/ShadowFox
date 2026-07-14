@@ -5,12 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>R S Krithikaa - Portfolio</title>
 <style>
+  /* ===== SAME BASE STYLES AS BEFORE ===== */
   body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
+    /* NEW: smooth theme switching */
+    transition: background-color 0.3s, color 0.3s;
   }
 
   header {
@@ -52,6 +55,14 @@
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 15px;
+    /* NEW: hover effect */
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  /* NEW: project card lifts up on hover */
+  .project:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
   }
 
   .project h3 {
@@ -73,53 +84,443 @@
     margin-top: 30px;
   }
 
-  /* Simple responsive fix for mobile */
   @media (max-width: 600px) {
     header h1 {
       font-size: 1.5rem;
     }
   }
+
+  /* ===== NEW: DARK MODE STYLES ===== */
+  body.dark-mode {
+    background-color: #1a1a2e;
+    color: #e8e8e8;
+  }
+
+  body.dark-mode .project {
+    background-color: #24243e;
+    border-color: #3a3a5a;
+  }
+
+  body.dark-mode h2 {
+    color: #a8a8e8;
+    border-bottom-color: #a8a8e8;
+  }
+
+  body.dark-mode .project a {
+    color: #a8a8e8;
+  }
+
+  /* NEW: dark mode toggle button */
+  #themeToggle {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background-color: white;
+    border: 2px solid #4a4a8a;
+    color: #4a4a8a;
+    padding: 8px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    z-index: 100;
+  }
+
+  /* NEW: back to top button */
+  #backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4a4a8a;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: none;
+  }
+
+  /* NEW: skill tag pills instead of plain bullet list */
+  .skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .skill-tag {
+    background-color: #4a4a8a;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+  }
+
+  body.dark-mode .skill-tag {
+    background-color: #a8a8e8;
+    color: #1a1a2e;
+  }
+
+  /* NEW: sticky navigation bar */
+  #navbar {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    padding: 12px;
+    z-index: 50;
+  }
+
+  body.dark-mode #navbar {
+    background-color: #24243e;
+  }
+
+  #navbar a {
+    color: #4a4a8a;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+  }
+
+  body.dark-mode #navbar a {
+    color: #a8a8e8;
+  }
+
+  #navbar a:hover {
+    text-decoration: underline;
+  }
+
+  /* NEW: scroll progress bar at the very top of the page */
+  #progressBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background-color: #ffb400;
+    width: 0%;
+    z-index: 200;
+  }
+
+  /* NEW: fade-in animation when sections scroll into view */
+  section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* NEW: typing cursor effect for the header tagline */
+  #typedText::after {
+    content: "|";
+    animation: blink 0.7s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* NEW: contact form styling */
+  #contactForm input,
+  #contactForm textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 6px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+    display: block;
+  }
+
+  #contactForm button {
+    background-color: #4a4a8a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+
+  #contactForm button:hover {
+    background-color: #38386a;
+  }
+
+  #formMessage {
+    margin-top: 10px;
+    font-weight: bold;
+    color: green;
+  }
+
+  /* NEW: skill progress bars */
+  .skill-bar-item {
+    margin-bottom: 14px;
+  }
+
+  .skill-bar-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+  }
+
+  .skill-bar-track {
+    background-color: #ddd;
+    border-radius: 10px;
+    height: 12px;
+    overflow: hidden;
+  }
+
+  body.dark-mode .skill-bar-track {
+    background-color: #3a3a5a;
+  }
+
+  .skill-bar-fill {
+    background-color: #4a4a8a;
+    height: 100%;
+    width: 0%; /* JS animates this to the real value */
+    border-radius: 10px;
+    transition: width 1.2s ease-out;
+  }
+
+  body.dark-mode .skill-bar-fill {
+    background-color: #a8a8e8;
+  }
+
+  /* NEW: project filter buttons */
+  .filter-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+
+  .filter-btn {
+    background-color: white;
+    border: 2px solid #4a4a8a;
+    color: #4a4a8a;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+
+  .filter-btn.active,
+  .filter-btn:hover {
+    background-color: #4a4a8a;
+    color: white;
+  }
+
+  body.dark-mode .filter-btn {
+    background-color: #24243e;
+    border-color: #a8a8e8;
+    color: #a8a8e8;
+  }
+
+  body.dark-mode .filter-btn.active,
+  body.dark-mode .filter-btn:hover {
+    background-color: #a8a8e8;
+    color: #1a1a2e;
+  }
+
+  /* NEW: hide projects that don't match the selected filter */
+  .project.hidden {
+    display: none;
+  }
+
+  /* NEW: testimonials section */
+  .testimonial {
+    background-color: white;
+    border-left: 4px solid #4a4a8a;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-style: italic;
+  }
+
+  body.dark-mode .testimonial {
+    background-color: #24243e;
+    border-left-color: #a8a8e8;
+  }
+
+  .testimonial-author {
+    display: block;
+    margin-top: 8px;
+    font-style: normal;
+    font-weight: bold;
+    color: #4a4a8a;
+  }
+
+  body.dark-mode .testimonial-author {
+    color: #a8a8e8;
+  }
+
+  /* NEW: loading screen shown briefly when the page first opens */
+  #loadingScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #4a4a8a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    transition: opacity 0.5s ease-out;
+  }
+
+  #loadingScreen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  #loadingScreen p {
+    color: white;
+    margin-top: 15px;
+    font-size: 1rem;
+  }
+
+  /* NEW: page fade-in once loading screen disappears */
+  body {
+    opacity: 0;
+  }
+
+  body.loaded {
+    opacity: 1;
+    transition: opacity 0.5s ease-in;
+  }
+
+  /* NEW: resume download button */
+  .resume-btn {
+    display: inline-block;
+    background-color: #ffb400;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 22px;
+    border-radius: 25px;
+    margin-top: 15px;
+  }
+
+  .resume-btn:hover {
+    background-color: #e6a200;
+  }
 </style>
 </head>
 <body>
 
+<!-- NEW: loading screen shown while the page first loads -->
+<div id="loadingScreen">
+  <div class="spinner"></div>
+  <p>Loading portfolio...</p>
+</div>
+
+<!-- NEW: Dark/Light mode toggle button -->
+<button id="themeToggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+
+<!-- NEW: scroll progress bar -->
+<div id="progressBar"></div>
+
+<!-- NEW: sticky nav bar for quick section jumps -->
+<div id="navbar">
+  <a href="#about">About</a>
+  <a href="#skills">Skills</a>
+  <a href="#projects">Projects</a>
+  <a href="#testimonials">Testimonials</a>
+  <a href="#contact">Contact</a>
+</div>
+
 <header>
   <h1>R S Krithikaa</h1>
-  <p>Engineering Student | Web Developer Intern</p>
+  <!-- NEW: this line now gets "typed out" by JavaScript instead of just appearing -->
+  <p id="typedText"></p>
+  <!-- NEW: resume download button -->
+  <a href="resume.pdf" download class="resume-btn">📄 Download Resume</a>
 </header>
 
 <section id="about">
   <h2>About Me</h2>
-  <p>I am an engineering student at SASTRA Deemed University, currently doing a web Developer Internship at ShadowFox.I enjoy learning new technologies and building small projects with web development frameworks.</p>
+  <p>I am an engineering student at SASTRA Deemed University, currently doing a Python Developer Internship at Elevate Labs. I also work as an English teacher for primary grade students. I enjoy learning new technologies and building small projects with Python.</p>
 </section>
 
 <section id="skills">
   <h2>Skills</h2>
-  <ul>
-    <li>Python</li>
-    <li>HTML &amp; CSS</li>
-    <li>JavaScript</li>
-    <li>SQL</li>
-    <li>Git &amp; GitHub</li>
-  </ul>
+  <!-- NEW: skills shown as tags instead of a plain bullet list -->
+  <div class="skills-container">
+    <span class="skill-tag">Python</span>
+    <span class="skill-tag">HTML &amp; CSS</span>
+    <span class="skill-tag">Flask</span>
+    <span class="skill-tag">Pandas &amp; Matplotlib</span>
+    <span class="skill-tag">Web Scraping (BeautifulSoup)</span>
+    <span class="skill-tag">SQL</span>
+    <span class="skill-tag">Git &amp; GitHub</span>
+  </div>
+
+  <!-- NEW: skill progress bars showing proficiency level -->
+  <div style="margin-top: 25px;">
+    <div class="skill-bar-item">
+      <div class="skill-bar-label"><span>Python</span><span>85%</span></div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" data-percent="85"></div></div>
+    </div>
+    <div class="skill-bar-item">
+      <div class="skill-bar-label"><span>HTML &amp; CSS</span><span>80%</span></div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" data-percent="80"></div></div>
+    </div>
+    <div class="skill-bar-item">
+      <div class="skill-bar-label"><span>SQL</span><span>70%</span></div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" data-percent="70"></div></div>
+    </div>
+    <div class="skill-bar-item">
+      <div class="skill-bar-label"><span>Git &amp; GitHub</span><span>75%</span></div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" data-percent="75"></div></div>
+    </div>
+  </div>
 </section>
 
 <section id="projects">
   <h2>Projects</h2>
 
-  <div class="project">
+  <!-- NEW: filter buttons to sort projects by category -->
+  <div class="filter-buttons">
+    <button class="filter-btn active" onclick="filterProjects('all', this)">All</button>
+    <button class="filter-btn" onclick="filterProjects('python', this)">Python</button>
+    <button class="filter-btn" onclick="filterProjects('data', this)">Data Analysis</button>
+  </div>
+
+  <div class="project" data-category="python">
     <h3>Calculator CLI</h3>
     <p>A simple command-line calculator built in Python. My first ever programming project.</p>
     <a href="https://github.com/Krithikaa1907/calculator-cli" target="_blank">View on GitHub</a>
   </div>
 
-  <div class="project">
+  <div class="project" data-category="python">
     <h3>To-Do List App</h3>
     <p>A console-based to-do list app that saves tasks to a file so they are not lost.</p>
     <a href="https://github.com/Krithikaa1907/todo-list-app" target="_blank">View on GitHub</a>
   </div>
 
-  <div class="project">
+  <div class="project" data-category="data">
     <h3>Sales Data Analysis</h3>
     <p>Analyzed sales data using Pandas and created bar charts using Matplotlib.</p>
     <a href="https://github.com/Krithikaa1907/sales-data-analysis" target="_blank">View on GitHub</a>
@@ -127,17 +528,146 @@
 
 </section>
 
+<!-- NEW: Testimonials section -->
+<section id="testimonials">
+  <h2>Testimonials</h2>
+  <div class="testimonial">
+    "Krithikaa picked up Python fundamentals quickly and delivered clean, working code for every task."
+    <span class="testimonial-author">— Mentor, Elevate Labs</span>
+  </div>
+  <div class="testimonial">
+    "A dedicated learner who pays attention to detail in every project she takes on."
+    <span class="testimonial-author">— Mentor, ShadowFox</span>
+  </div>
+</section>
+
 <section id="contact">
   <h2>Contact</h2>
-  <p>Email: <a href="mailto:krithikaars@gmail.com">krithikaars@gmail.com</a></p>
-  <p>LinkedIn: <a href="https://www.linkedin.com/in/krithikaa-saravanan-09b52b331?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank">linkedin.com/in/krithikaa-saravanan-09b52b331</a></p>
+  <p>Email: <a href="mailto:your.email@example.com">your.email@example.com</a></p>
+  <p>LinkedIn: <a href="https://linkedin.com/in/your-linkedin" target="_blank">linkedin.com/in/your-linkedin</a></p>
   <p>GitHub: <a href="https://github.com/Krithikaa1907" target="_blank">github.com/Krithikaa1907</a></p>
-  <p>Phone: +91 9342538850</p>
+  <p>Phone: +91 00000 00000</p>
+
+  <!-- NEW: simple contact form (demo only, does not actually send email) -->
+  <h3>Send me a message</h3>
+  <form id="contactForm" onsubmit="handleFormSubmit(event)">
+    <input type="text" id="nameInput" placeholder="Your Name" required>
+    <input type="email" id="emailInput" placeholder="Your Email" required>
+    <textarea id="messageInput" rows="4" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+  <p id="formMessage"></p>
 </section>
 
 <footer>
   <p>&copy; 2026 R S Krithikaa</p>
 </footer>
+
+<!-- NEW: Back to top button -->
+<button id="backToTop" onclick="scrollToTop()">↑</button>
+
+<script>
+  // ===== NEW: Dark mode toggle =====
+  function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+    const btn = document.getElementById('themeToggle');
+    if (document.body.classList.contains('dark-mode')) {
+      btn.textContent = '☀️ Light Mode';
+    } else {
+      btn.textContent = '🌙 Dark Mode';
+    }
+  }
+
+  // ===== NEW: Show "back to top" button only after scrolling down =====
+  window.onscroll = function() {
+    const backToTopBtn = document.getElementById('backToTop');
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+      backToTopBtn.style.display = 'block';
+    } else {
+      backToTopBtn.style.display = 'none';
+    }
+  };
+
+  // ===== NEW: Smooth scroll to top =====
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ===== NEW: Typing animation for the header subtitle =====
+  const textToType = "Engineering Student | Python Developer Intern";
+  let charIndex = 0;
+  function typeWriter() {
+    if (charIndex < textToType.length) {
+      document.getElementById('typedText').textContent += textToType.charAt(charIndex);
+      charIndex++;
+      setTimeout(typeWriter, 60);
+    }
+  }
+  typeWriter();
+
+  // ===== NEW: Scroll progress bar fills up as the user scrolls down the page =====
+  window.addEventListener('scroll', function() {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progressBar').style.width = scrolled + '%';
+  });
+
+  // ===== NEW: Fade in each section as it scrolls into view =====
+  const sections = document.querySelectorAll('section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+  sections.forEach(sec => observer.observe(sec));
+
+  function handleFormSubmit(event) {
+    event.preventDefault(); // stop the page from refreshing
+    const name = document.getElementById('nameInput').value;
+    document.getElementById('formMessage').textContent =
+      "Thanks " + name + "! (This is a demo form - connect it to a backend or a service like Formspree to actually receive messages.)";
+    document.getElementById('contactForm').reset();
+  }
+
+  // ===== NEW: Animate skill bars to their target width when they scroll into view =====
+  const skillBars = document.querySelectorAll('.skill-bar-fill');
+  const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const bar = entry.target;
+        bar.style.width = bar.getAttribute('data-percent') + '%';
+      }
+    });
+  }, { threshold: 0.3 });
+  skillBars.forEach(bar => skillObserver.observe(bar));
+
+  // ===== NEW: Filter projects by category when a filter button is clicked =====
+  function filterProjects(category, btn) {
+    // update active button styling
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // show/hide project cards based on category
+    document.querySelectorAll('.project').forEach(proj => {
+      if (category === 'all' || proj.getAttribute('data-category') === category) {
+        proj.classList.remove('hidden');
+      } else {
+        proj.classList.add('hidden');
+      }
+    });
+  }
+
+  // ===== NEW: Hide the loading screen once everything has finished loading =====
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      document.getElementById('loadingScreen').classList.add('fade-out');
+      document.body.classList.add('loaded');
+    }, 600); // small delay so the spinner is visible briefly
+  });
+</script>
 
 </body>
 </html>
